@@ -16,3 +16,10 @@ export const fetchJobs = async () => {
   // return response.data;
   return jobs;
 };
+
+export const fetchJobById = async (id) => {
+  // const response = await axios.get(`${API_BASE_URL}/jobs`);
+  // return response.data;
+  const job = jobs.find((job) => job.id === Number(id));
+  return job || null;
+};
