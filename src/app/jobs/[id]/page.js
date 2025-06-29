@@ -1,6 +1,7 @@
 // app/jobs/[id]/page.js
+import { fetchJobById } from "@/lib/api";
 import Head from "next/head";
-import { fetchJobById } from "../../lib/api";
+
 
 export default async function JobPage({ params }) {
   const job = await fetchJobById(params.id);
