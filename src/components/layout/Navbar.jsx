@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import SearchModal from "./SearchModal";
+import SearchModal from "../modals/SearchModal";
 
 const menuItems = [
     { label: "Home", href: "/" },
@@ -21,14 +21,20 @@ const moreItems = [
 ];
 
 export default function Navbar() {
-    const [showSearch, setShowSearch] = useState(false);
+    const [showModal, setShowModal] = useState(false);
+
+    const handleSearch = (query) => {
+        console.log('Searching:', query);
+        setShowModal(false);
+    };
+
     const [isMoreOpen, setIsMoreOpen] = useState(false);
 
     return (
         <>
             <nav className="bg-[#05055f] h-[47px] flex items-center justify-between relative z-10 px-[9px] pl-[31px]">
                 {/* Left Navigation */}
-                <ul className="flex text-white font-semibold h-full items-center leading-tight tracking-normal">
+                <ul className="flex text-white h-full items-center leading-tight tracking-wide">
                     {menuItems.map((item) => (
                         <li key={item.label} className="h-[47px]">
                             <Link
@@ -51,7 +57,7 @@ export default function Navbar() {
                                 href={"/more"}
                                 className="pl-2   hover:bg-[#982704] h-full flex items-center transition-colors duration-200"
                             >
-                                More 
+                                More
                             </Link>
                             <span className="ml-1 p-1">▼</span>
                         </button>
@@ -75,19 +81,14 @@ export default function Navbar() {
 
                 {/* Right Search Button */}
                 <button
-                    onClick={() => setShowSearch(true)}
+                    onClick={() => setShowModal(true)}
                     className="text-white hover:bg-[#982704] px-3 h-full  rounded"
                 >
                     🔍
                 </button>
             </nav>
 
-            {/* Search modal */}
-            <SearchModal
-                isOpen={showSearch}
-                items={[...menuItems, ...moreItems]}
-                onClose={() => setShowSearch(false)}
-            />
+            {showModal && <SearchModal onClose={() => setShowModal(false)} onSearch={handleSearch} />}
         </>
     );
 }

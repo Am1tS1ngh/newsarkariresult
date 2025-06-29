@@ -1,10 +1,10 @@
 import { Roboto } from "next/font/google";
 import "./globals.css";
 import Head from "next/head";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import AdSense from "@/components/AdSense";
-import AdBanner from "@/components/AdBanner";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
+import AdSense from "@/components/ads/AdSense";
+import AdBanner from "@/components/ads/AdBanner";
 
 const roboto = Roboto({
   weight: ['400', '700'],
@@ -17,10 +17,15 @@ export const metadata = {
   icons: {
     icon: "/favicon.ico",
     apple: "/apple-touch-icon.png",
-  },
-  themeColor: "#cd0808",
+  }
 };
 
+export const viewport = {
+  themeColor: "#cd0808",
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+};
 export default function RootLayout({ children }) {
   return (
     <html lang="en">

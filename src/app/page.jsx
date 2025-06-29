@@ -1,6 +1,8 @@
 // app/page.js
 import LatestUpdates from "@/components/LatestUpdates";
 import { fetchLatestUpdates } from "../lib/api";
+import CategoryColumns from "@/components/sections/CategoryColumns";
+// import SearchBar from "@/components/SearchBar";
 
 export default async function Page() {
   const updates = await fetchLatestUpdates();
@@ -22,11 +24,15 @@ export default async function Page() {
         </div>
       </div>
 
-
+      {/* Search Bar */}
+      {/* <SearchBar className="mt-6 px-4" /> */}
 
       <h2 className="text-2xl font-bold mt-4 px-4">Latest Updates</h2>
 
       <LatestUpdates />
+
+      {/* Category Columns */}
+      <CategoryColumns/>
       
     </div>
   );
