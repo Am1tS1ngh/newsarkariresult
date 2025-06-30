@@ -1,30 +1,41 @@
-import { useState, useRef } from 'react';
+'use client';
+
+import { useState, useRef, useEffect } from 'react';
 import { X } from 'lucide-react';
 
 export default function SearchModal({ onClose, onSearch }) {
   const [query, setQuery] = useState('');
-  const inputRef = useRef();
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    inputRef.current?.focus(); // Autofocus when modal opens
+  }, []);
 
   const handleClear = () => {
     setQuery('');
-    inputRef.current.focus();
+    inputRef.current?.focus();
   };
 
   const handleSearch = () => {
     if (query.trim()) {
       onSearch(query);
+      setQuery('');
     }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') handleSearch();
+    if (e.key === 'Escape') onClose();
   };
 
   return (
     <div
       className="fixed inset-0 z-50 bg-black/70 flex justify-center items-start pt-[200px]"
-      onClick={onClose} // Close when clicking on backdrop
+      onClick={onClose} // Clicking outside closes modal
     >
-      {/* This div prevents clicks inside the input box from closing the modal */}
       <div
         className="flex items-center w-full max-w-xl px-4"
-        onClick={(e) => e.stopPropagation()} // Prevent closing on child click
+        onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside
       >
         <div className="relative w-full">
           <input
@@ -33,6 +44,7 @@ export default function SearchModal({ onClose, onSearch }) {
             placeholder="Search here..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={handleKeyDown}
             className="w-full py-3 pl-4 pr-10 rounded-l-md bg-white text-black text-sm outline-none"
           />
           {query && (

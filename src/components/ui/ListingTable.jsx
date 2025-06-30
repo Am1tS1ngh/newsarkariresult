@@ -13,10 +13,10 @@ const ListingTable = ({ title, items }) => {
       <ul className="divide-y divide-gray-300">
         
         {items.map((item, index) => (
-          <li key={index} className="bg-white hover:bg-gray-50">
+          <li key={index} className="bg-white hover:bg-gray-50 ">
             <Link
               href={item.href}
-              className="flex items-center px-4 py-3 text-blue-700 hover:underline"
+              className="flex items-center px-4 py-2 text-blue-700 hover:underline leading-tight text-sm font-semibold"
             >
               {/* <span className="text-green-600 text-lg mr-2">›</span> */}
               <span className=" mr-2">•</span>

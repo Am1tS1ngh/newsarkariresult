@@ -15,8 +15,8 @@ const data = [
 
 export default function CategoryColumns() {
     return (
-      <div className="container mx-auto p-4 ">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 ">
+      <div className="container mx-auto p-4 pt-0 ">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4 ">
           <ListingTable title="Results" items={data} />
           <ListingTable title="Admit Cards" items={data} />
           <ListingTable title="Latest Jobs" items={data} />

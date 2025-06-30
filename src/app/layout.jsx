@@ -59,32 +59,21 @@ export default function RootLayout({ children }) {
       <body className={roboto.className}>
         <div className="flex flex-col min-h-screen font-arial md:flex-row">
 
-          {/* Top Ad (for mobile/tablet portrait) */}
-          <aside className="block md:hidden h-[5vh]">
-            <AdBanner dataAdFormat="auto" dataFullWidthResponsive={ true } dataAdSlot="3552186405"/>
-          </aside>
-
           {/* Left Ad (for desktop and tablet landscape) */}
-          <aside className="hidden md:block basis-[15%] max-w-[533px] p-4">
+          <aside className="hidden ">
           {/* <aside className="block basis-[15%] max-w-[533px] p-4 border border-red-500"> */}
             <AdBanner dataAdFormat="auto" dataFullWidthResponsive={ true } dataAdSlot="3552186405"/>
           </aside>
 
           {/* Center Content */}
-          <div className="flex-1 flex flex-col justify-between min-w-0">
+          <div className="flex-1 flex flex-col justify-between  max-w-[1070px] mx-auto min-w-0">
             <Header />
             <main className="flex-grow">{children}</main>
             <Footer />
           </div>
 
           {/* Right Ad (for desktop and tablet landscape) */}
-          <aside className="hidden md:block basis-[15%] max-w-[533px] p-4">
-            <AdBanner dataAdFormat="auto" dataFullWidthResponsive={ true } dataAdSlot="3552186405"/>
-
-          </aside>
-
-          {/* Bottom Ad (for mobile/tablet portrait) */}
-          <aside className="block md:hidden h-[5vh]">
+          <aside className="hidden ">
             <AdBanner dataAdFormat="auto" dataFullWidthResponsive={ true } dataAdSlot="3552186405"/>
 
           </aside>
@@ -95,3 +84,4 @@ export default function RootLayout({ children }) {
 
   );
 }
+

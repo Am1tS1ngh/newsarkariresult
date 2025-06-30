@@ -8,8 +8,8 @@ export default function NotFound() {
   };
 
   return (
-    <div className="h-[100%] flex items-center justify-center bg-gradient-to-br from-red-500 to-blue-500 text-center p-6">
-      <div className="max-w-lg bg-white shadow-lg rounded-xl p-8 border border-gray-200 animate-fade-in">
+    <div className="h-[100%] w-[100%] flex-1 max-w-[1070px] mx-auto min-w-0 flex items-center justify-center bg-gradient-to-br from-red-500 to-blue-500 text-center p-6">
+      <div className=" bg-white shadow-lg rounded-xl p-8 border border-gray-200 animate-fade-in">
         <h1 className="text-4xl font-extrabold text-red-600 mb-4">🚧 Server is Too Busy</h1>
 
         <p className="text-lg text-gray-600 mb-4">

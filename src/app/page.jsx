@@ -1,8 +1,11 @@
 // app/page.js
-import LatestUpdates from "@/components/LatestUpdates";
+import LatestUpdates from "@/components/sections/LatestUpdates";
 import { fetchLatestUpdates } from "../lib/api";
 import CategoryColumns from "@/components/sections/CategoryColumns";
 // import SearchBar from "@/components/SearchBar";
+export const metadata = {
+  title: "Home | Sarkari Result 2025",
+};
 
 export default async function Page() {
   const updates = await fetchLatestUpdates();
@@ -26,13 +29,14 @@ export default async function Page() {
 
       {/* Search Bar */}
       {/* <SearchBar className="mt-6 px-4" /> */}
+      {/* <ManageRecordForm /> */}
 
       <h2 className="text-2xl font-bold mt-4 px-4">Latest Updates</h2>
 
       <LatestUpdates />
 
       {/* Category Columns */}
-      <CategoryColumns/>
+      <CategoryColumns />
       
     </div>
   );
