@@ -3,7 +3,7 @@ import ListingTable from "@/components/ui/ListingTable";
 import { fetchJobs } from "@/lib/api";
 
 export const metadata = {
-  title: "Result | Sarkari Result",
+  title: "Syllabus | Sarkari Result",
   description:
     "Welcome to Sarkari Result. Stay informed about the Latest Jobs of various competitive exams conducted by government bodies across India, whether you are waiting for the Job Notification of any recruitment exam, entrance exam or any other government exam then we update the Latest Job from time to time to keep you informed.",
   alternates: {
@@ -34,7 +34,7 @@ export default async function JobsPage() {
   const jobs = await fetchJobs();
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">Latest Results</h1>
+      <h1 className="text-3xl font-bold mb-6">Syllabus Results</h1>
       <p className="mb-4">
         Welcome to Sarkari Result. Stay informed about the Latest Jobs of various competitive exams conducted by government bodies across India, whether you are waiting for the Job Notification of any recruitment exam, entrance exam or any other government exam then we update the Latest Job from time to time to keep you informed.
       </p>

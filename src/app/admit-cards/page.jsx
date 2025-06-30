@@ -38,12 +38,10 @@ export default async function JobsPage() {
       <p className="mb-4">
         Welcome to Sarkari Result. Stay informed about the Latest Jobs of various competitive exams conducted by government bodies across India, whether you are waiting for the Job Notification of any recruitment exam, entrance exam or any other government exam then we update the Latest Job from time to time to keep you informed.
       </p>
-      <div className="grid grid-cols-3 gap-6 mb-8">
         <div>
           <ListingTable title="Admit Cards" items={data} />
         </div>
-        <div className="col-span-2"></div>
-      </div>
+    
     </div>
 
   );
