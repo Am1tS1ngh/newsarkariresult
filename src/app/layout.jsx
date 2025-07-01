@@ -12,7 +12,7 @@ const roboto = Roboto({
 
 export const metadata = {
   metadataBase: new URL('https://newsarkariresult.co.in'),
-  title: "Sarkari Result 2025 | New Sarkari Result | newsarkariresult.co.in",
+  title: "New Sarkari Result | Sarkari Result 2025 | newsarkariresult.co.in",
   description: "Find the latest Sarkari Result, Online Forms, Admit Cards, Answer Keys, Syllabus, and updates on Government Jobs, Sarkari Yojana, and Scholarships. Your one-stop portal for all government job alerts.",
   verification: {
     google: 'googlec7bba8d22d0ca581',
@@ -67,9 +67,9 @@ export default function RootLayout({ children }) {
           </aside>
 
           {/* Center Content */}
-          <div className="flex-1 flex flex-col justify-between max-w-[1070px] min-w-0">
+          <div className="flex-1 flex flex-col max-w-[1070px] min-w-0">
             <Header />
-            <main className="flex-grow">{children}</main>
+            <main className="flex-grow ">{children}</main>
             <Footer />
           </div>
 

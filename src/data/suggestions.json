@@ -1,0 +1,97 @@
+{
+  "sections": [
+    {
+      "title": "Meta Details",
+      "id": "meta-details",
+      "fields": [
+        {
+          "name": "title_slug",
+          "type": "text",
+          "label": "Title Slug",
+          "placeholder": "Enter title slug"
+        },
+        {
+          "name": "title",
+          "type": "text",
+          "label": "Title",
+          "placeholder": "Enter title"
+        },
+        {
+          "name": "description",
+          "type": "textarea",
+          "label": "Description",
+          "placeholder": "Enter description"
+        },
+        {
+          "name": "keywords",
+          "type": "text",
+          "label": "Keywords",
+          "placeholder": "Enter keywords (comma separated)"
+        },
+        {
+          "name": "image_url",
+          "type": "text",
+          "label": "Image URL",
+          "placeholder": "Enter image URL"
+        },
+        {
+          "name": "name_of_post",
+          "type": "text",
+          "label": "Name of Post",
+          "placeholder": "Enter name of post"
+        },
+        {
+          "name": "name_of_organisation",
+          "type": "text",
+          "label": "Name of Organisation",
+          "placeholder": "Enter name of organisation"
+        },
+        { "name": "post_date", "type": "date", "label": "Post Date" },
+        { "name": "update_date", "type": "date", "label": "Update Date" }
+      ]
+    },
+    { "title": "Important Dates", "id": "important-dates", "fields": [
+        { "name": "start_date", "type": "date", "label": "Start Date" },
+        { "name": "end_date", "type": "date", "label": "End Date" },
+        { "name": "exam_date", "type": "date", "label": "Exam Date" },
+        { "name": "result_date", "type": "date", "label": "Result Date" }
+      ]
+    },
+    { 
+      "title": "Eligibility Criteria",
+      "id": "eligibility-criteria",
+      "fields": [
+        { 
+          "name": "age_limit",
+          "type": "text",
+          "label": "Age Limit",
+          "placeholder": "Enter age limit"
+        },
+        {
+          "name": "education_qualification",
+          "type": "text",
+          "label": "Education Qualification",
+          "placeholder": "Enter education qualification"
+        }
+      ]
+    },
+    {
+      "title": "Application Process",
+      "id": "application-process",
+      "fields": [
+        {
+          "name": "application_fee",
+          "type": "text",
+          "label": "Application Fee",
+          "placeholder": "Enter application fee"
+        },
+        {
+          "name": "how_to_apply",
+          "type": "textarea",
+          "label": "How to Apply",
+          "placeholder": "Enter how to apply"
+        }
+      ]
+    }
+  ]
+}

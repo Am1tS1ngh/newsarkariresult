@@ -1,0 +1,42 @@
+const APP_ID = process.env.NEXT_PUBLIC_MONGODB_APP_ID; // found in App Services > App Settings
+const API_KEY = process.env.NEXT_PUBLIC_MONGODB_API_KEY; // generated in App Services > API Keys
+
+export async function getAccessToken(apiKey) {
+  const res = await fetch(`https://realm.mongodb.com/api/client/v2.0/app/${APP_ID}/auth/providers/api-key/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ key: apiKey }),
+  });
+
+  if (!res.ok) throw new Error("Failed to authenticate with MongoDB App Services");
+
+  const data = await res.json();
+  return data.access_token; // this is the JWT you can now use
+}
+
+
+export async function callMongoFunction(functionName, args = {}) {
+  const accessToken = await getAccessToken(API_KEY);
+  if (!accessToken) {
+    throw new Error("Failed to retrieve access token for MongoDB App Services");
+  }
+  const response = await fetch(`https://realm.mongodb.com/api/client/v2.0/app/${APP_ID}/functions/call`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Request-Headers": "*",
+       Authorization: `Bearer ${accessToken}`, // now it's a valid token
+    },
+    body: JSON.stringify({
+      name: functionName,
+      arguments: [args],
+    }),
+  });
+
+  if (!response.ok) {
+    const errorBody = await response.json();
+    throw new Error(`Mongo Function '${functionName}' error: ${errorBody.error || response.statusText}`);
+  }
+
+  return response.json();
+}

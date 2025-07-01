@@ -32,7 +32,6 @@ export default function Navbar() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     const handleSearch = (query) => {
-        console.log("Searching:", query);
         setShowModal(false);
     };
     // useEffect(() => {
