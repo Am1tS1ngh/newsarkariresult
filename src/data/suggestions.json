@@ -2,7 +2,7 @@
   "sections": [
     {
       "title": "Meta Details",
-      "id": "meta-details",
+      "id": "meta_details",
       "fields": [
         {
           "name": "title_slug",
@@ -59,7 +59,7 @@
     },
     { 
       "title": "Eligibility Criteria",
-      "id": "eligibility-criteria",
+      "id": "eligibility_criteria",
       "fields": [
         { 
           "name": "age_limit",
@@ -77,7 +77,7 @@
     },
     {
       "title": "Application Process",
-      "id": "application-process",
+      "id": "application_process",
       "fields": [
         {
           "name": "application_fee",
