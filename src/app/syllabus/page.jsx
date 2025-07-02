@@ -1,50 +1,25 @@
-// app/jobs/page.js
 import ListingTable from "@/components/ui/ListingTable";
-import { fetchJobs } from "@/lib/api";
 
 export const metadata = {
   title: "Syllabus | Sarkari Result",
   description:
-    "Welcome to Sarkari Result. Stay informed about the Latest Jobs of various competitive exams conducted by government bodies across India, whether you are waiting for the Job Notification of any recruitment exam, entrance exam or any other government exam then we update the Latest Job from time to time to keep you informed.",
+    "Find the latest syllabus for all government exams. Stay updated with the latest exam patterns and syllabus details.",
   alternates: {
-    canonical: "https://newsarkariresult.co.in/jobs",
+    canonical: "https://newsarkariresult.co.in/syllabus",
   },
 };
 
-const data = [
-  {
-    label: "UPSC Civil Services Exam 2025",
-    href: "/jobs/upsc-civil-services-exam-2025",
-  },
-  {
-    label: "SSC CGL 2025 Notification",
-    href: "/jobs/ssc-cgl-2025-notification",
-  },
-  {
-    label: "IBPS PO Recruitment 2025",
-    href: "/jobs/ibps-po-recruitment-2025",
-  },
-  {
-    label: "Railway Group D Exam 2025",
-    href: "/jobs/railway-group-d-exam-2025",
-  },
-];
-
-export default async function JobsPage() {
-  const jobs = await fetchJobs();
+export default function SyllabusPage() {
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">Syllabus Results</h1>
+      <h1 className="text-3xl font-bold mb-6">Syllabus</h1>
       <p className="mb-4">
-        Welcome to Sarkari Result. Stay informed about the Latest Jobs of various competitive exams conducted by government bodies across India, whether you are waiting for the Job Notification of any recruitment exam, entrance exam or any other government exam then we update the Latest Job from time to time to keep you informed.
+        Welcome to Sarkari Result. Here you can find the latest syllabus for all government exams. Stay updated with the latest exam patterns and syllabus details to prepare effectively.
       </p>
-      
-        <div>
-          <ListingTable title="Result" items={data} />
-        </div>
-        
-      
+      <ListingTable
+        title="Syllabus"
+        category="syllabus"
+      />
     </div>
-
   );
 }

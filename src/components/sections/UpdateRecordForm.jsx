@@ -1,9 +1,10 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { ChevronDown, Plus, Trash2, GripVertical, Upload, Star } from 'lucide-react';
+import { ChevronDown, Plus, Trash2, GripVertical, Upload, Star, Edit } from 'lucide-react';
 import suggestionsData from '@/data/suggestions.json';
-import AutocompleteInput from '@/components/ui/AutocompleteInput';
+import AutoCompleteInput from '@/components/ui/AutoCompleteInput';
+import MetadataModal from '@/components/modals/MetadataModal';
 
 // --- UTILITY FUNCTIONS ---
 
@@ -78,7 +79,7 @@ const DynamicTable = ({ table, onUpdate, onRemove }) => {
   return (
     <div className="p-4 border-2 border-blue-200 rounded-lg bg-blue-50/50">
       <div className="flex justify-between items-center mb-4">
-        <AutocompleteInput type="text" placeholder="Table Name" value={table.name} onChange={(e) => onUpdate({ ...table, name: e.target.value })} className="text-lg font-semibold !border-blue-300" suggestions={[]} />
+        <AutoCompleteInput type="text" placeholder="Table Name" value={table.name} onChange={(e) => onUpdate({ ...table, name: e.target.value })} className="text-lg font-semibold !border-blue-300" suggestions={[]} />
         <div className="flex items-center gap-2">
           <input type="file" ref={fileInputRef} className="hidden" accept=".csv" onChange={handleFileImport} />
           <button type="button" onClick={() => fileInputRef.current.click()} className="flex items-center bg-blue-500 text-white py-2 px-3 rounded-md hover:bg-blue-600"><Upload size={16} className="mr-2" /> Import CSV</button>
@@ -92,7 +93,7 @@ const DynamicTable = ({ table, onUpdate, onRemove }) => {
               {table.columns.map((col, index) => (
                 <th key={col.id} className="p-1 border border-gray-300 bg-gray-100">
                   <div className="flex items-center gap-1">
-                    <AutocompleteInput value={col.name} onChange={(e) => updateColumnName(index, e.target.value)} suggestions={[]} />
+                    <AutoCompleteInput value={col.name} onChange={(e) => updateColumnName(index, e.target.value)} suggestions={[]} />
                     <button type="button" onClick={() => removeColumn(index)} className="p-1 text-red-400 hover:text-red-600"><Trash2 size={16} /></button>
                   </div>
                 </th>
@@ -105,7 +106,7 @@ const DynamicTable = ({ table, onUpdate, onRemove }) => {
               <tr key={row.id}>
                 {row.cells.map((cell, cellIndex) => (
                   <td key={cellIndex} className="p-1 border border-gray-200">
-                    <AutocompleteInput type="text" value={cell} onChange={(e) => updateRow(rowIndex, cellIndex, e.target.value)} suggestions={[]} />
+                    <AutoCompleteInput type="text" value={cell} onChange={(e) => updateRow(rowIndex, cellIndex, e.target.value)} suggestions={[]} />
                   </td>
                 ))}
                 <td className="p-1 border border-gray-200 text-center">
@@ -126,7 +127,7 @@ const DynamicTable = ({ table, onUpdate, onRemove }) => {
 
 // --- FORM FIELD COMPONENT ---
 
-const FormField = ({ field, onUpdate, onRemove, sectionTitle }) => {
+const FormField = ({ field, onUpdate, onRemove, sectionTitle, onEditMetadata }) => {
   const handleLabelChange = (e) => {
     const newLabel = e.target.value;
     const fieldDetails = getFieldDetails(sectionTitle, newLabel);
@@ -145,16 +146,16 @@ const FormField = ({ field, onUpdate, onRemove, sectionTitle }) => {
       case 'textarea':
         return <StyledTextarea placeholder={placeholder} value={field.value} onChange={(e) => onUpdate({ ...field, value: e.target.value })} />;
       case 'date':
-        return <AutocompleteInput type="date" placeholder={placeholder} value={field.value} onChange={(e) => onUpdate({ ...field, value: e.target.value })} suggestions={[]} />;
+        return <AutoCompleteInput type="date" placeholder={placeholder} value={field.value} onChange={(e) => onUpdate({ ...field, value: e.target.value })} suggestions={[]} />;
       case 'key_value_pair':
         return (
           <div className="flex-grow flex gap-4">
-            <AutocompleteInput placeholder="Key" value={field.key || ''} onChange={(e) => onUpdate({ ...field, key: e.target.value })} suggestions={[]} />
-            <AutocompleteInput placeholder="Value (URL)" value={field.value || ''} onChange={(e) => onUpdate({ ...field, value: e.target.value })} suggestions={[]} />
+            <AutoCompleteInput placeholder="Key" value={field.key || ''} onChange={(e) => onUpdate({ ...field, key: e.target.value })} suggestions={[]} />
+            <AutoCompleteInput placeholder="Value (URL)" value={field.value || ''} onChange={(e) => onUpdate({ ...field, value: e.target.value })} suggestions={[]} />
           </div>
         );
       default: // 'text'
-        return <AutocompleteInput placeholder={placeholder} value={field.value} onChange={(e) => onUpdate({ ...field, value: e.target.value })} suggestions={[]} />;
+        return <AutoCompleteInput placeholder={placeholder} value={field.value} onChange={(e) => onUpdate({ ...field, value: e.target.value })} suggestions={[]} />;
     }
   };
 
@@ -162,7 +163,7 @@ const FormField = ({ field, onUpdate, onRemove, sectionTitle }) => {
     <div className="flex items-center gap-4 p-3 border rounded-lg bg-gray-50">
       <GripVertical className="cursor-move text-gray-400" />
       <div className="w-1/3">
-        <AutocompleteInput placeholder="Field Label" value={field.label} onChange={handleLabelChange} suggestions={getFieldSuggestionsForSection(sectionTitle)} />
+        <AutoCompleteInput placeholder="Field Label" value={field.label} onChange={handleLabelChange} suggestions={getFieldSuggestionsForSection(sectionTitle)} />
       </div>
       {renderValueInput()}
       <select value={field.fieldType} onChange={(e) => onUpdate({ ...field, fieldType: e.target.value, value: '', key: '' })} className="p-2 border border-gray-300 rounded-md shadow-sm">
@@ -171,9 +172,7 @@ const FormField = ({ field, onUpdate, onRemove, sectionTitle }) => {
         <option value="date">Date</option>
         <option value="key_value_pair">Key-Value Pair</option>
       </select>
-       <button type="button" onClick={() => onUpdate({ ...field, important: !field.important })} className={`p-2 rounded-full ${field.important ? 'bg-yellow-400 text-white' : 'bg-gray-200 text-gray-500'} hover:bg-yellow-300`}>
-          <Star size={16} />
-        </button>
+      <button type="button" onClick={() => onEditMetadata(field)} className="p-2 text-blue-500 hover:text-blue-700"><Edit size={16} /></button>
       <button type="button" onClick={onRemove} className="p-2 text-red-500 hover:text-red-700"><Trash2 /></button>
     </div>
   );
@@ -181,7 +180,7 @@ const FormField = ({ field, onUpdate, onRemove, sectionTitle }) => {
 
 // --- FORM SECTION COMPONENT ---
 
-const FormSection = ({ section, onUpdate, onRemove }) => {
+const FormSection = ({ section, onUpdate, onRemove, onEditMetadata, onSaveDraft }) => {
   const [isOpen, setIsOpen] = useState(true);
 
   const updateElement = (index, updatedElement) => {
@@ -192,7 +191,7 @@ const FormSection = ({ section, onUpdate, onRemove }) => {
 
   const addElement = (type) => {
     const newElement = type === 'field'
-      ? { id: generateUniqueId(), type: 'field', label: '', value: '', fieldType: 'text', name: '', important: false }
+      ? { id: generateUniqueId(), type: 'field', label: '', value: '', fieldType: 'text', name: '', important: 'normal' }
       : { id: generateUniqueId(), type: 'table', name: 'New Table', columns: [{ id: generateUniqueId(), name: 'Column 1' }], rows: [] };
     onUpdate({ ...section, elements: [...section.elements, newElement] });
   };
@@ -200,9 +199,9 @@ const FormSection = ({ section, onUpdate, onRemove }) => {
   const removeElement = (index) => onUpdate({ ...section, elements: section.elements.filter((_, i) => i !== index) });
 
   return (
-    <div className="mb-6 border-2 border-gray-300 rounded-xl shadow-lg">
+    <div className="mb-6 border-2 border-gray-300 rounded-xl shadow-lg relative">
       <header className="flex justify-between items-center p-3 bg-gray-100 rounded-t-lg cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
-        <AutocompleteInput placeholder="Section Title" value={section.title} onChange={(e) => onUpdate({ ...section, title: e.target.value })} className="text-xl font-bold !border-gray-300" suggestions={sectionSuggestions} onClick={(e) => e.stopPropagation()} />
+        <AutoCompleteInput placeholder="Section Title" value={section.title} onChange={(e) => onUpdate({ ...section, title: e.target.value })} className="text-xl font-bold !border-gray-300" suggestions={sectionSuggestions} onClick={(e) => e.stopPropagation()} />
         <div className="flex items-center gap-2">
           <button type="button" onClick={(e) => { e.stopPropagation(); onRemove(); }} className="p-2 text-red-500 hover:text-red-700"><Trash2 /></button>
           <ChevronDown className={`transform transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
@@ -212,7 +211,7 @@ const FormSection = ({ section, onUpdate, onRemove }) => {
         <div className="p-4 space-y-4">
           {section.elements.map((element, index) => {
             const Component = element.type === 'field' ? FormField : DynamicTable;
-            return <Component key={element.id} {...{ [element.type]: element }} onUpdate={(updated) => updateElement(index, updated)} onRemove={() => removeElement(index)} sectionTitle={section.title} />;
+            return <Component key={element.id} {...{ [element.type]: element }} onUpdate={(updated) => updateElement(index, updated)} onRemove={() => removeElement(index)} sectionTitle={section.title} onEditMetadata={onEditMetadata} />;
           })}
           <div className="flex justify-center gap-4 pt-4 border-t-2 border-dashed">
             <button type="button" onClick={() => addElement('field')} className="flex items-center py-2 px-4 border-2 border-dashed rounded-lg text-gray-600 hover:bg-gray-50"><Plus className="mr-2" /> Add Field</button>
@@ -220,6 +219,13 @@ const FormSection = ({ section, onUpdate, onRemove }) => {
           </div>
         </div>
       )}
+      <button
+        type="button"
+        onClick={onSaveDraft}
+        className="absolute bottom-2 right-2 bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-600 text-sm"
+      >
+        Save Changes
+      </button>
     </div>
   );
 };
@@ -227,16 +233,28 @@ const FormSection = ({ section, onUpdate, onRemove }) => {
 // --- MAIN FORM BUILDER ---
 
 export default function UpdateRecordForm({ onSubmit, initialData }) {
+  const isUpdateMode = !!initialData?._id;
+  const [category, setCategory] = useState(initialData?.category || 'Posts');
   const [sections, setSections] = useState(initialData?.sections || [{ id: generateUniqueId(), title: '', elements: [] }]);
   const [showIn, setShowIn] = useState({
     jobs: false,
     results: false,
     admitCard: false,
+    admission: false,
+    syllabus: false,
+    answerKey: false,
   });
+  const [editingField, setEditingField] = useState(null);
 
   useEffect(() => {
     if (initialData?.show) {
       setShowIn(initialData.show);
+    }
+    if (initialData?.sections) {
+      setSections(initialData.sections);
+    }
+    if (initialData?.category) {
+      setCategory(initialData.category);
     }
   }, [initialData]);
 
@@ -255,11 +273,30 @@ export default function UpdateRecordForm({ onSubmit, initialData }) {
     setShowIn(prev => ({ ...prev, [name]: checked }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleEditMetadata = (field) => {
+    setEditingField(field);
+  };
+
+  const handleSaveMetadata = (metadata) => {
+    const newSections = sections.map(section => ({
+      ...section,
+      elements: section.elements.map(el => {
+        if (el.id === editingField.id) {
+          return { ...el, ...metadata };
+        }
+        return el;
+      })
+    }));
+    setSections(newSections);
+    setEditingField(null);
+  };
+
+  const getPayload = (isDraft = false) => {
     const payload = {
+        category,
         show: showIn,
         sections: [],
+        pendingForm: isDraft,
     };
     
     sections.forEach(section => {
@@ -273,7 +310,6 @@ export default function UpdateRecordForm({ onSubmit, initialData }) {
 
       section.elements.forEach(el => {
         if (el.type === 'field') {
-          // Use the stored 'name' for the key, not the label
           if (el.name) {
             sectionData.elements.push({
                 id: el.id,
@@ -309,17 +345,41 @@ export default function UpdateRecordForm({ onSubmit, initialData }) {
         payload.sections.push(sectionData);
       }
     });
+    console.log("Generated Payload:", payload);
+    return payload;
+  }
+
+  const handleSaveDraft = () => {
+    const payload = getPayload(true);
+    console.log("Saving Draft Payload:", payload);
+    onSubmit(payload);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const payload = getPayload(false);
     console.log("Final Transformed Payload:", payload);
     onSubmit(payload);
   };
 
   return (
     <div className="bg-white p-6 rounded-xl shadow-2xl">
-      <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">Update Record</h2>
+      <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
+        {isUpdateMode ? 'Update Record' : 'Add New Record'}
+      </h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-6 p-4 border-2 border-purple-200 rounded-lg bg-purple-50/50">
-            <h3 className="text-xl font-bold mb-2 text-purple-800">Display Categories</h3>
-            <div className="flex gap-4">
+            <h3 className="text-xl font-bold mb-2 text-purple-800">Category</h3>
+             <select value={category} onChange={(e) => setCategory(e.target.value)} className="p-2 border border-gray-300 rounded-md shadow-sm w-full">
+                <option value="Posts">Posts</option>
+                <option value="Admission">Admission</option>
+                <option value="Syllabus">Syllabus</option>
+                <option value="Answer-Key">Answer-Key</option>
+            </select>
+        </div>
+        <div className="mb-6 p-4 border-2 border-purple-200 rounded-lg bg-purple-50/50">
+            <h3 className="text-xl font-bold mb-2 text-purple-800">Display In</h3>
+            <div className="flex gap-4 flex-wrap">
                 <label className="flex items-center gap-2">
                     <input type="checkbox" name="jobs" checked={showIn.jobs} onChange={handleShowInChange} className="form-checkbox h-5 w-5 text-purple-600" />
                     <span>Jobs</span>
@@ -329,10 +389,38 @@ export default function UpdateRecordForm({ onSubmit, initialData }) {
                     <span>Results</span>
                 </label>
                  <label className="flex items-center gap-2">
-                    <input type="checkbox" name="admitCard" checked={showIn.admitCard} onChange={handleShowInChange} className="form-checkbox h-5 w-5 text-purple-600" />
-                    <span>Admit Card</span>
-                </label>
-            </div>
-        </div>
-
-        {sections.map((section, index) => <FormSection key={section.id} section={section} onUpdate={(updated) => updateSection(index, updated)} onRemove={() => removeSection(index)} />)}
+                     <input type="checkbox" name="admitCard" checked={showIn.admitCard} onChange={handleShowInChange} className="form-checkbox h-5 w-5 text-purple-600" />
+                     <span>Admit Card</span>
+                 </label>
+                  <label className="flex items-center gap-2">
+                     <input type="checkbox" name="admission" checked={showIn.admission} onChange={handleShowInChange} className="form-checkbox h-5 w-5 text-purple-600" />
+                     <span>Admission</span>
+                 </label>
+                  <label className="flex items-center gap-2">
+                     <input type="checkbox" name="syllabus" checked={showIn.syllabus} onChange={handleShowInChange} className="form-checkbox h-5 w-5 text-purple-600" />
+                     <span>Syllabus</span>
+                 </label>
+                  <label className="flex items-center gap-2">
+                     <input type="checkbox" name="answerKey" checked={showIn.answerKey} onChange={handleShowInChange} className="form-checkbox h-5 w-5 text-purple-600" />
+                     <span>Answer Key</span>
+                 </label>
+             </div>
+         </div>
+ 
+         {editingField && (
+           <MetadataModal
+             field={editingField}
+             onSave={handleSaveMetadata}
+             onCancel={() => setEditingField(null)}
+           />
+         )}
+ 
+         {sections.map((section, index) => <FormSection key={section.id} section={section} onUpdate={(updated) => updateSection(index, updated)} onRemove={() => removeSection(index)} onEditMetadata={handleEditMetadata} onSaveDraft={handleSaveDraft} />)}
+         <button type="button" onClick={addSection} className="flex items-center justify-center w-full mt-6 py-3 px-6 border-2 border-dashed border-purple-400 rounded-lg text-purple-600 font-semibold hover:bg-purple-50"><Plus className="mr-2" /> Add New Section</button>
+         <button type="submit" className="w-full mt-8 bg-green-600 text-white py-3 px-6 rounded-lg text-lg font-semibold hover:bg-green-700 transition-transform transform hover:scale-105">
+           {isUpdateMode ? 'Update Record' : 'Add Record'}
+         </button>
+       </form>
+     </div>
+   );
+ }

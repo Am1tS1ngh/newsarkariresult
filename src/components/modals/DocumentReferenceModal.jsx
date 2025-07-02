@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Search, X } from 'lucide-react';
-import { fetchJobs } from '@/lib/api'; // We'll reuse this to get all records
+import { fetchRecords } from '@/lib/api'; // We'll reuse this to get all records
 
 export default function DocumentReferenceModal({ onSelect, onClose }) {
   const [searchTerm, setSearchTerm] = useState('');
@@ -15,7 +15,7 @@ export default function DocumentReferenceModal({ onSelect, onClose }) {
       setIsLoading(true);
       setError(null);
       try {
-        const allRecords = await fetchJobs();
+        const allRecords = await fetchRecords();
         setRecords(allRecords);
       } catch (err) {
         setError('Failed to load records.');

@@ -1,44 +1,62 @@
-import { NextResponse } from 'next/server';
 import { callMongoFunction } from '@/lib/mongo-app';
+import { createApiResponse } from '@/lib/api-helpers';
+import { NextResponse } from 'next/server';
+import { cors } from '@/lib/cors';
 
+// === CORS helper to apply headers ===
+function applyCors(response) {
+  const corsHeaders = cors(); // or pass request if needed
+  Object.entries(corsHeaders).forEach(([key, value]) => {
+    response.headers.set(key, value);
+  });
+  return response;
+}
+
+// === OPTIONS handler ===
+export async function OPTIONS() {
+  return new NextResponse(null, {
+    status: 204,
+    headers: cors()
+  });
+}
+
+// === POST handler ===
 export async function POST(request) {
+  let action;
   try {
-    const { action, payload } = await request.json();
+    const { action: clientAction, payload: clientPayload, srvc } = await request.json();
+    action = clientAction;
 
-    switch (action) {
-      case 'getAllRecords':
-        const { searchTerm } = payload || {};
-
-        const records = await callMongoFunction('getAllRecords', { searchTerm });
-        return NextResponse.json(records,{ status: 200 });
-
-      case 'getRecordDetails':
-        const { title_slug } = payload || {};
-
-        const details = await callMongoFunction('getRecordDetails', { title_slug });
-        return NextResponse.json(details,{ status: 200 });
-      
-      case 'addRecord':
-        const { record: newRecord } = payload;
-        const addResult = await callMongoFunction('addRecord', { record: newRecord });
-        return NextResponse.json({ message: "Record created successfully", ...addResult }, { status: 201 });
-
-      case 'updateRecord':
-        const { id: updateId, record: updatedRecord } = payload;
-
-        const updateResult = await callMongoFunction('updateRecord', { id: updateId, record: updatedRecord });
-        return NextResponse.json({ message: "Record updated successfully", ...updateResult }, { status: 200 });
-
-      case 'deleteRecord':
-        const { id: deleteId } = payload;
-        const deleteResult = await callMongoFunction('deleteRecord', { id: deleteId });
-        return NextResponse.json({ message: "Record deleted successfully", ...deleteResult }, { status: 200 });
-
-      default:
-        return NextResponse.json({ message: "Invalid action" }, { status: 400 });
+    if (!action) {
+      const response = createApiResponse({
+        stat: false,
+        code: '400',
+        message: "Action not specified in the request body.",
+        trxn: `txn_${Date.now()}`,
+        srvc: "api-gateway"
+      });
+      return applyCors(response);
     }
+
+    const backendPayload = {
+      data: clientPayload,
+      srvc: srvc || 'web-client'
+    };
+
+    const realmResponse = await callMongoFunction(action, backendPayload);
+    const response = createApiResponse(realmResponse);
+
+    return applyCors(response);
+
   } catch (e) {
-    console.error(`API Error during action:`, e);
-    return NextResponse.json({ message: "An API error occurred", error: e.message }, { status: 500 });
+    const response = createApiResponse({
+      stat: false,
+      code: '500',
+      message: "An unexpected error occurred on the server.",
+      data: { error: e.message },
+      trxn: `txn_${Date.now()}`,
+      srvc: "api-gateway"
+    });
+    return applyCors(response);
   }
 }

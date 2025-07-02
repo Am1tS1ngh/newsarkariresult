@@ -1,7 +1,13 @@
 const APP_ID = process.env.NEXT_PUBLIC_MONGODB_APP_ID; // found in App Services > App Settings
 const API_KEY = process.env.NEXT_PUBLIC_MONGODB_API_KEY; // generated in App Services > API Keys
+let cachedToken = null;
+let tokenExpiry = null;
 
 export async function getAccessToken(apiKey) {
+  if (cachedToken && Date.now() < tokenExpiry) {
+    return cachedToken;
+  }
+
   const res = await fetch(`https://realm.mongodb.com/api/client/v2.0/app/${APP_ID}/auth/providers/api-key/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -11,7 +17,10 @@ export async function getAccessToken(apiKey) {
   if (!res.ok) throw new Error("Failed to authenticate with MongoDB App Services");
 
   const data = await res.json();
-  return data.access_token; // this is the JWT you can now use
+  cachedToken = data.access_token;
+  tokenExpiry = Date.now() + 25 * 60 * 1000; // Cache for 25 mins (token is usually valid for 30 mins)
+
+  return cachedToken;  // this is the JWT you can now use
 }
 
 

@@ -10,7 +10,7 @@ const BaseStyledInput = ({ ...props }) => (
   />
 );
 
-export default function AutocompleteInput({ value, onChange, suggestions, ...props }) {
+export default function AutoCompleteInput({ value, onChange, suggestions, ...props }) {
   const [filteredSuggestions, setFilteredSuggestions] = useState([]);
   const [isFocused, setIsFocused] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);

@@ -15,14 +15,14 @@ const data = [
 
 export default function CategoryColumns() {
     return (
-      <div className="container mx-auto p-4 pt-0 ">
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4 ">
-          <ListingTable title="Results" items={data} />
-          <ListingTable title="Admit Cards" items={data} />
-          <ListingTable title="Latest Jobs" items={data} />
-          <ListingTable title="Answer Key" items={data} />
-          <ListingTable title="Documents" items={data} />
-          <ListingTable title="Admission" items={data} />
+      <div className="container p-1 pt-0 ">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-2 ">
+          <ListingTable title="Results" category="latest-jobs" items={data} />
+          <ListingTable title="Admit Cards" category="admit_card" items={data}/>
+          <ListingTable title="Latest Jobs" category="latest-jobs" items={data}  />
+          <ListingTable title="Answer Key" category="answer-keys" items={data}  />
+          <ListingTable title="Syllabus" category="syllabus" items={data}  />
+          <ListingTable title="Admission" category="latest-jobs" items={data}  />
         </div>
       </div>
     );
