@@ -1,7 +1,7 @@
 import latestUpdates from '../data/latest-updates.json';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3000';
-const API_ENDPOINT = `${API_BASE_URL}/api/records`;
+// const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3000';
+const API_ENDPOINT = `/api/records`;
 
 export const fetchLatestUpdates = async () => {
   // This can be updated later to fetch from an API
