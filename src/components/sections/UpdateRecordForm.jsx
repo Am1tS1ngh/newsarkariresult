@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import { ChevronDown, Plus, Trash2, GripVertical, Upload, Star, Edit } from 'lucide-react';
 import suggestionsData from '@/data/suggestions.json';
 import MetadataModal from '@/components/modals/MetadataModal';
-import AutoCompleteInput from '@/components/ui/AutoCompleteInput';
+import AutoCompleteInput from '../ui/AutoCompleteInput.jsx';
 
 // --- UTILITY FUNCTIONS ---
 
