@@ -1,5 +1,5 @@
-const APP_ID = process.env.NEXT_PUBLIC_MONGODB_APP_ID;
-const API_KEY = process.env.NEXT_PUBLIC_MONGODB_API_KEY;
+const APP_ID = process.env.NEXT_PUBLIC_MONGODB_APP_ID || process.env.MONGODB_APP_ID;
+const API_KEY = process.env.NEXT_PUBLIC_MONGODB_API_KEY || process.env.MONGODB_API_KEY;
 let cachedToken = null;
 let tokenExpiry = null;
 
@@ -14,7 +14,10 @@ export async function getAccessToken(apiKey) {
     body: JSON.stringify({ key: apiKey }),
   });
 
-  if (!res.ok) throw new Error("Failed to authenticate with MongoDB App Services");
+  if (!res.ok) {
+    const errorBody = await res.json();
+    throw new Error(`Failed to authenticate with MongoDB App Services: ${errorBody.error || JSON.stringify(errorBody)}`);
+  }
 
   const data = await res.json();
   cachedToken = data.access_token;
