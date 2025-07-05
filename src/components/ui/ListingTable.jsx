@@ -8,7 +8,7 @@ const ListingTable = ({ title, category, searchTerm = '' }) => {
   const [records, setRecords] = useState([]);
   const [pagination, setPagination] = useState({
     index: 1,
-    items: 10,
+    items: 25, // Items per page
     count: 0,
   });
   const [isLoading, setIsLoading] = useState(true);
@@ -24,14 +24,15 @@ const ListingTable = ({ title, category, searchTerm = '' }) => {
         index: pageIndex,
         items: pagination.items,
       });
+      console.log(`Fetched records for category "${category}" with searchTerm "${searchTerm}"`, data);
       if (data === null || !data.list) {
         throw new Error('Failed to fetch records.');
       }
       setRecords(data.list);
       setPagination({
-        index: data.index,
-        items: data.items,
-        count: data.count,
+        index: parseInt(data.index || 1),
+        items: parseInt(data.items || 0),
+        count: parseInt(data.count || 0),
       });
     } catch (err) {
       setError(err.message);
@@ -50,11 +51,11 @@ const ListingTable = ({ title, category, searchTerm = '' }) => {
   }));
 
   return (
-    <div>
-      <div className="border border-gray-300 rounded-sm overflow-hidden mb-2">
-        <div className="bg-[#A80909] text-white text-center font-bold text-2xl px-4 py-2">
+    <div className='w-full'>
+      <div className="border border-gray-300 rounded-sm overflow-hidden mb-2 flex flex-col">
+        <h2 className="bg-[#A80909] text-white text-base md:text-2xl lg:text-3xl tracking-wide text-center font-bold [h-30px] px-4">
           {title}
-        </div>
+        </h2>
         <ul className="divide-y divide-gray-300 min-h-[100px]">
           {isLoading ? (
             <li className="p-4 text-center">Loading...</li>
@@ -71,7 +72,7 @@ const ListingTable = ({ title, category, searchTerm = '' }) => {
                 >
                 <p>
                   <span className="mr-1">•</span>
-                  <span className='text-lg hover:underline'>{item.label}</span>
+                  <span className='text-base md:text-lg lg:text-lg hover:underline'>{item.label}</span>
                 </p>
                 
                 </Link>

@@ -44,7 +44,18 @@ export async function POST(request) {
     };
 
     const realmResponse = await callMongoFunction(action, backendPayload);
-    const response = createApiResponse(realmResponse);
+
+    // Ensure the response is in the standardized format before creating the API response.
+    const formattedResponse = {
+      stat: true,
+      code: '200',
+      message: `Action '${action}' executed successfully.`,
+      data: realmResponse, // The actual data from the Mongo function
+      trxn: `txn_${Date.now()}`,
+      srvc: "api-gateway"
+    };
+
+    const response = createApiResponse(formattedResponse);
 
     return applyCors(response);
 

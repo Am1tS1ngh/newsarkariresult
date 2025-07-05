@@ -3,24 +3,32 @@ import { notFound } from 'next/navigation';
 import { Star, ExternalLink, Send } from 'lucide-react';
 
 // Generate metadata for SEO
-export async function generateMetadata({ params }) {
-  const post = await fetchRecordById(params.slug);
+export async function generateMetadata({params}) {
+  params = await params; // Ensure params is resolved
+  try {
+    const post = await fetchRecordById(params.slug);
 
-  if (!post) {
+    if (!post) {
+      return {
+        title: 'Post Not Found',
+      };
+    }
+
+    const mainTitle = post.title || 'Untitled Post';
+    const description = post.short_information || `Details about ${mainTitle}`;
+
     return {
-      title: 'Post Not Found',
+      title: `${mainTitle} - Sarkari Result`,
+      description: description,
+      keywords: post.keywords || [mainTitle, 'sarkari result', 'government jobs'],
+    };
+  } catch (error) {
+    console.error('Error generating metadata:', error);
+    return {
+      title: 'Error',
+      description: 'An error occurred while generating page metadata.',
     };
   }
-
-  // Assuming the new structure has a top-level title and a summary/description field
-  const mainTitle = post.title || 'Untitled Post';
-  const description = post.short_information || `Details about ${mainTitle}`;
-
-  return {
-    title: `${mainTitle} - Sarkari Result`,
-    description: description,
-    keywords: post.keywords || [mainTitle, 'sarkari result', 'government jobs'],
-  };
 }
 
 // --- DYNAMIC CONTENT RENDERER COMPONENTS ---
@@ -109,10 +117,10 @@ const SectionRenderer = ({ section }) => (
 );
 
 
-export default async function PostDetailPage({ params }) {
-  const { slug } = params;
-  const post = await fetchRecordById(slug);
-  console.log(`Fetched for slug: ${slug}`, post);
+export default async function PostDetailPage({params}) {
+  params = await params;
+  const post = await fetchRecordById(params.slug);
+  console.log(`Fetched for slug: ${params.slug}`, post);
   if (!post || !post.sections) {
     notFound();
   }

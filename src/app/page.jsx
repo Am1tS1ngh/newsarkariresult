@@ -29,6 +29,7 @@ export default function Page() {
 
     try {
       const data = await fetchRecords({ searchTerm, index: pageIndex, items: 20 });
+      console.log(`Fetched records with searchTerm "${searchTerm}" at index ${pageIndex}`, data);
       if (data && data.list) {
         setSearchResults(data.list);
         setPagination({
@@ -77,7 +78,7 @@ export default function Page() {
       {hasSearched ? (
         <div className="px-4 mt-6">
           <div className="border border-gray-300 rounded-sm overflow-hidden mb-6">
-            <div className="bg-[#A80909] text-white text-center font-bold text-2xl px-4 py-3">
+            <div className="bg-[#A80909] text-white text-center font-bold text-base md:text-lg lg:text-xl px-4 py-3">
               Matched Records
             </div>
             <ul className="divide-y divide-gray-300 min-h-[100px]">
@@ -86,13 +87,13 @@ export default function Page() {
               ) : error ? (
                 <li className="p-4 text-center text-red-500">Error: {error}</li>
               ) : formattedRecords.length === 0 ? (
-                <li className="p-4 text-center">No records found.</li>
+                <li className="p-4 text-center">Sorry, but nothing matched your search terms. Please try again with some different keywords.</li>
               ) : (
                 formattedRecords.map((item, index) => (
                   <li key={index} className="bg-white hover:bg-gray-50 ">
                     <Link
                       href={item.href}
-                      className="flex items-center px-4 py-2 text-blue-700 hover:underline leading-tight text-sm font-semibold"
+                      className="flex items-center px-4 py-2 text-blue-700 hover:underline leading-tight md:text-lg lg:text-lg font-semibold"
                     >
                       <span className=" mr-2">•</span>
                       <span>{item.label}</span>

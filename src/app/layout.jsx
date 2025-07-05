@@ -62,19 +62,19 @@ export default function RootLayout({ children }) {
         <div className="flex flex-col min-h-screen font-arial md:flex-row md:justify-center">
 
           {/* Left Ad (for desktop and tablet landscape) */}
-          <aside className="hidden lg:block w-[160px] ">
+          <aside className="hidden lg:block ">
             <AdBanner dataAdFormat="auto" dataFullWidthResponsive={ true } dataAdSlot="3552186405"/>
           </aside>
 
           {/* Center Content */}
-          <div className="flex-1 flex flex-col max-w-[1070px] min-w-0">
+          <div className="flex-1 flex flex-col max-w-[1070px] ">
             <Header />
             <main className="flex-grow">{children}</main>
             <Footer />
           </div>
 
           {/* Right Ad (for desktop and tablet landscape) */}
-          <aside className="hidden lg:block w-[160px] ">
+          <aside className="hidden lg:block">
             <AdBanner dataAdFormat="auto" dataFullWidthResponsive={ true } dataAdSlot="3552186405"/>
           </aside>
 

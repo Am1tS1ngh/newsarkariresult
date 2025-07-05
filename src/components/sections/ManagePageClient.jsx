@@ -25,7 +25,7 @@ export default function ManagePageClient() {
     setError(null);
     try {
       const data = await fetchRecords({ searchTerm: term, index: pageIndex, items: pagination.items });
-      console.log('Fetched records data:', data);
+      // console.log('Fetched records data:', data);
       if (data === null || !data.list) {
         throw new Error('Failed to fetch records. The API returned an invalid response.');
       }
@@ -75,7 +75,7 @@ export default function ManagePageClient() {
     let result;
     try {
       if (isUpdating) {
-        result = await updateRecord(selectedRecord._id, formData);
+        result = await updateRecord(selectedRecord.unique_id, formData);
       } else {
         // This handles both new records and drafts.
         result = await addRecord(formData);

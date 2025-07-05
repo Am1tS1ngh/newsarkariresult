@@ -44,14 +44,16 @@ async function apiRequest(action, payload) {
 
 export const fetchRecords = async ({ searchTerm = '', index = 1, items = 25 }) => {
   const data = await apiRequest('getAllRecords', { searchTerm, index, items });
+    console.log(`Fetched records with searchTerm "${searchTerm}" at index ${index}`, data);
   // The response now contains the list and pagination info.
   // We return the whole data object for the client to handle, with a fallback.
-  return data || { list: [], count: 0, index: 1, items: 25 };
+  return data?.data || {list: [], count: 0, index: 1, items: 25};
 };
 
-export const fetchCategoryRecords = async ({ category, searchTerm = '', index = 1, items = 10 }) => {
+export const fetchCategoryRecords = async ({ category, searchTerm = '', index = 1, items = 20 }) => {
   const data = await apiRequest('getCategoryRecords', { category, searchTerm, index, items });
-  return data || { list: [], count: 0, index: 1, items: 10 };
+  console.log(`Fetched category records for ${category} with searchTerm "${searchTerm}"`, data);
+  return data?.data || {list: [], count: 0, index: 1, items: 25};
 };
 
 export const fetchRecordById = async (slug) => {
@@ -63,8 +65,8 @@ export const addRecord = async (record) => {
     return await apiRequest('addRecord', { record });
 };
 
-export const updateRecord = async (id, record) => {
-    return await apiRequest('updateRecord', { id, record });
+export const updateRecord = async (unique_id, updateData) => {
+    return await apiRequest('updateRecord', { unique_id, updateData });
 };
 
 export const deleteRecord = async (unique_id) => {
