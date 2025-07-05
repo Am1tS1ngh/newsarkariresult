@@ -1,5 +1,5 @@
-const APP_ID = process.env.MONGODB_APP_ID; // found in App Services > App Settings
-const API_KEY = process.env.MONGODB_API_KEY; // generated in App Services > API Keys
+const APP_ID = process.env.NEXT_PUBLIC_MONGODB_APP_ID;
+const API_KEY = process.env.NEXT_PUBLIC_MONGODB_API_KEY;
 let cachedToken = null;
 let tokenExpiry = null;
 
