@@ -11,3 +11,6 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
     Cross-Origin-Opener-Policy = "same-origin"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
