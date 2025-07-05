@@ -3,7 +3,7 @@
 import { useState, useRef } from 'react';
 import { ChevronDown, Plus, Trash2, GripVertical, Upload } from 'lucide-react';
 import suggestionsData from '@/data/suggestions.json';
-import AutoCompleteInput from '@/components/ui/AutoCompleteInput';
+import AutoCompleteInput from '@/components/ui/AutocompleteInput';
 
 // --- UTILITY FUNCTIONS ---
 
