@@ -3,13 +3,13 @@
 import { useState, useRef, useEffect } from 'react';
 import { ChevronDown, Plus, Trash2, GripVertical, Upload, Star, Edit } from 'lucide-react';
 import suggestionsData from '@/data/suggestions.json';
-import AutoCompleteInput from '@/components/ui/AutoCompleteInput';
 import MetadataModal from '@/components/modals/MetadataModal';
+import AutoCompleteInput from '../ui/AutoCompleteInput';
 
 // --- UTILITY FUNCTIONS ---
 
 const generateUniqueId = () => `id_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-
+fix 
 const sectionSuggestions = suggestionsData.sections.map(s => s.title);
 const sectionMap = new Map(suggestionsData.sections.map(s => [s.title, s]));
 
