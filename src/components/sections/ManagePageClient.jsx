@@ -60,7 +60,7 @@ export default function ManagePageClient() {
   };
 
   const handleLogin = (secret) => {
-    if (secret === process.env.NEXT_PUBLIC_ADMIN_SECRET) {
+    if (secret === process.env.ADMIN_SECRET) {
       setIsAuthenticated(true);
       return true;
     }

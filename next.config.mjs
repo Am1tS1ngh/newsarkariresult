@@ -13,7 +13,7 @@ const nextConfig = {
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "font-src 'self' https://fonts.gstatic.com",
               "img-src 'self' data: https://www.google-analytics.com https://pagead2.googlesyndication.com",
-              "connect-src 'self' https://www.google-analytics.com https://ep1.adtrafficquality.google.com",
+              "connect-src 'self' https://realm.mongodb.com https://www.google-analytics.com https://ep1.adtrafficquality.google.com",
               "frame-src 'self' https://googleads.g.doubleclick.net https://*.googlesyndication.com",
             ].join('; '),
           },
