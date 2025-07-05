@@ -8,7 +8,7 @@ export async function getAccessToken(apiKey) {
     return cachedToken;
   }
 
-  const res = await fetch(`https://realm.mongodb.com/api/client/v2.0/app/${APP_ID}/auth/providers/api-key/login`, {
+  const res = await fetch(`https://ap-south-1.aws.realm.mongodb.com/api/client/v2.0/app/${APP_ID}/auth/providers/api-key/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ key: apiKey }),
@@ -32,7 +32,7 @@ export async function callMongoFunction(functionName, args = {}) {
   if (!accessToken) {
     throw new Error("Failed to retrieve access token for MongoDB App Services");
   }
-  const response = await fetch(`https://realm.mongodb.com/api/client/v2.0/app/${APP_ID}/functions/call`, {
+  const response = await fetch(`https://ap-south-1.aws.realm.mongodb.com/api/client/v2.0/app/${APP_ID}/functions/call`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
